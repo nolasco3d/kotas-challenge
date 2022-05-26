@@ -1,9 +1,16 @@
 <template>
-    <router-view />
+  <router-view />
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {}
+  },
+}
+</script>
 
 <style lang="scss">
-#app {}
+#app {
+}
 </style>
