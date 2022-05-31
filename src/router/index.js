@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '/src/components/Home.vue'
-import PokemonDetails from '/src/components/PokemonDetails.vue'
+import Home from '/src/views/Home.vue'
+import PokemonDetails from '/src/views/PokemonDetails.vue'
 
 const routes = [
     {
