@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap');
+
 #app {
   background: rgba(241, 244, 245, 1);
   font-family: 'Mulish', sans-serif;
