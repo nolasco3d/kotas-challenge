@@ -1,6 +1,8 @@
 <template>
   <div class="navbar">
-    <img src="" alt="logo">
+    <router-link to="/">
+      <img src="./assets/logo.svg" alt="logo" />
+    </router-link>
   </div>
   <router-view />
 </template>

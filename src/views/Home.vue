@@ -2,10 +2,11 @@
   <section class="page-container">
     <loader :showLoader="isLoading" />
     <search-input 
+      :showClearButton="clearSearchResults"
       @searchResult="handleSearchResult" 
       @clearSearch="() => search = []"/>
 
-    <h2 class="title">Pokemons</h2>
+    <h2 class="title">Pokémons</h2>
 
     <div class="grid-container" v-if="searchResult">
       <card 
@@ -52,6 +53,9 @@ export default {
     },
     searchResult() {
       return !!(this.search.length && this.search.length > 0)
+    },
+    clearSearchResults () {
+      return !!(this.search.length > 0)
     }
   },
   methods: {

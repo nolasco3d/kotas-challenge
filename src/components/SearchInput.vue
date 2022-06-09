@@ -6,7 +6,10 @@
       placeholder="Pesquise por nome ou código"
       type="text" 
       v-model="search">
-      <!-- <button class="clear">X</button> -->
+      <button 
+        v-show="showClearButton"
+        class="clear" 
+        @click="reset">X</button>
   </div>
 </template>
 
@@ -14,8 +17,7 @@
 export default {
   data () {
     return {
-      search:'',
-      result: []
+      search:''
     }
   },
   methods: {
@@ -30,6 +32,15 @@ export default {
       finally {
         this.search = ''
       }
+    },
+    reset () {
+      this.search = ''
+      this.$emit('clearSearch')
+    }
+  },
+  props: {
+    showClearButton: {
+      type: Boolean
     }
   }
 }
