@@ -1,25 +1,47 @@
-# Pokédex
+<h1 align="center">
+  <img alt="logo" title="kotas logo" src="./assets/logo.svg" />
+</h1>
 
-Listagem de Pokémon e pesquisa simples através do código do Pokémon ou seu nome exato.
+<h1 align="center">Pokédex</h1>
+Uma bela Pokédex para listagem de todos os Pokémons.
 
-![Banner](src/assets/logo.svg)
+![Badge](https://img.shields.io/badge/license-MIT-green)
 
-## Rodando o projeto
+### ✨ Features
 
-Primeiro instale as dependências:
+- Pesquisa simples pelo nome do Pokémon
+- Pesquisa pelo código do Pokémon
+- Exibição dos detalhes de cada Pokémon
+
+<h1 align="center">
+  <img alt="banner" title="pokedex" src="./assets/banner.png" />
+</h1>
+
+### ✅ Pré-requisitos
 
 ```bash
-yarn install
+# node na versão 16.14 ou superior
+$ node -v
+v16.14.2
+
+# yarn ou npm
+$ yarn -v
+1.22.18
 ```
 
-Depois execute o comando para rodar o projeto
+### 🚀 Rodando o projeto
 
 ```bash
-yarn dev
+$ yarn && yarn dev
+# ou
+$ npm && npm run dev
 ```
 
-Please make sure to update tests as appropriate.
+### 💻 Tecnologias
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
+- [Node.js](https://nodejs.org/pt-br/)
+- [Vite](https://vitejs.dev/)
+- [Tailwindcss](https://tailwindcss.com/)
+- [VueJs 2](https://v2.vuejs.org/)
+- [Vue-Router](https://router.vuejs.org/)
+- [Vuex](https://vuex.vuejs.org/)
