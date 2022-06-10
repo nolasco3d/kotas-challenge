@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="logo" title="kotas logo" src="./assets/logo.svg" />
+  <img alt="logo" title="kotas logo" src="./src/assets/logo.svg" />
 </h1>
 
 <h1 align="center">Pokédex</h1>
@@ -14,7 +14,7 @@ Uma bela Pokédex para listagem de todos os Pokémons.
 - Exibição dos detalhes de cada Pokémon
 
 <h1 align="center">
-  <img alt="banner" title="pokedex" src="./assets/banner.png" />
+  <img alt="banner" title="pokedex" src="./src/assets/banner.png" />
 </h1>
 
 ### ✅ Pré-requisitos
