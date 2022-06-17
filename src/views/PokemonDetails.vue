@@ -3,6 +3,7 @@
     <template v-if="pokemon">
       <div class="card mb-8">
         <img 
+          v-if="pokemon.sprites"
           class="thumb"
           width="96" 
           height="96" 
@@ -10,7 +11,7 @@
           :alt="`${pokemon.name} picture`">
         
         <p class="title">{{ pokemon.name }}</p>
-        
+
         <div class="types-container" >
           <div 
             v-for="(row, index) in pokemon.types" 
@@ -21,12 +22,24 @@
         
       </div>
 
+      <div class="card mb-8 m-">
+        <h3 class="title">Detalhes</h3>
+        <ul class="list-container">
+          <li>
+            <strong>Peso:</strong> <span>{{pokemon.weight}}</span>
+          </li>
+          <li>
+            <strong>Altura:</strong> <span>{{pokemon.height}}</span>
+          </li>
+        </ul>
+      </div>
+
       <div class="card details mb-8">
         <h3 class="title">Habilidades</h3>
         <ul class="list-container" >
           <li class="list-item"
             v-for="(row, index) in pokemon.abilities" :key="index">
-            {{ row.ability.name }}
+            {{ row.ability }}
           </li>
         </ul>
       </div>
@@ -34,12 +47,24 @@
       <div class="card mb-8">
         <h3 class="title">Evolutions</h3>
         <div class="evolution-container">
-          <span class="evolution-item" v-for="(evo, index) in pokemon.evoChain" :key="index">{{evo.species_name}}</span>
+          <template v-for="(evo, index) in pokemon.evoChain" :key="index">
+            <button 
+              @click="goToPokemon(evo.species_name)"
+              class="evolution-item types-item">
+              {{evo.species_name}} 
+            </button>
+            
+            <span v-if="index < pokemon.evoChain.length -1" class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </template>
         </div>
         <pre>{{pokemon.evolves}}</pre>
       </div>
 
-      <router-link to="/">Voltar</router-link>
+
+
+      <button class="return" @click="$router.go(-1)">Voltar</button>
 
       <!-- <div class="card" v-if="pokemon.species.length > 0">
         <h3>Evoluções</h3>
@@ -63,21 +88,54 @@ export default {
     }
   },
   async mounted () {
-    const name = this.$route.params.name || ''
-    this.pokemon = await this.$axios.get(`/pokemon/${name}`).then(res => res.data)
+    await this.loadPokemon()
     
-    let evoData = await this.$axios.get(`/evolution-chain/${this.pokemon.id}`).then(res => res.data.chain )
-    const evoChain = []
-    do {
-      evoChain.push({
-        'species_name': evoData.species.name,
-        "url": evoData.species.url
+  },
+  methods: {
+    goToPokemon (pokemonName) {
+      this.$router.push({
+        name: 'PokemonDetail',
+        params: {
+          name: pokemonName
+        }
       })
-      evoData = evoData['evolves_to'][0]
-    } while (!!evoData && evoData.hasOwnProperty('evolves_to'))
+    },
+    async loadPokemon (pokeName) {
+      const name = pokeName || this.$route.params.name || ''
+      this.pokemon = await this.$axios.get(`/pokemon/${name}`).then(res => res.data)
+      if (!this.pokemon && !this.pokemon.species && !this.pokemon.species.url) return
+      const getEvos = await this.$axios.get(`${this.pokemon.species.url}`)
+        .then(res => {
+          if(res.data){
+            return {
+              evolves_from_species:  res.data.evolves_from_species,
+              evolution_chain: res.data.evolution_chain.url
+            }
+          }
+        })
 
-    this.pokemon.evoChain = evoChain
-    
+      let evoData = await this.$axios.get(`${getEvos.evolution_chain}`)
+        .then(res => res.data.chain)
+      const evoChain = []
+      do {
+        evoChain.push({
+          'species_name': evoData.species.name,
+          "url": evoData.species.url
+        })
+        evoData = evoData['evolves_to'][0]
+      } while (!!evoData && evoData.hasOwnProperty('evolves_to'))
+
+      this.pokemon.evoChain = evoChain
+    }
+  },
+  watch: {
+    '$route.params.name': {
+      async handler () {
+        await this.loadPokemon()
+      },
+      deep: true,
+      immediate: true
+    }
   }
 }
 </script>

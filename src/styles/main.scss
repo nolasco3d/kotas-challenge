@@ -24,6 +24,14 @@
   text-transform: capitalize;
 }
 
+.return {
+  color: #00a3ff;
+  text-align: center;
+  width: 100%;
+  font-weight: 700;
+  display: block;
+}
+
 // CARD
 .card {
   min-height: 190px;
@@ -121,16 +129,29 @@
 
   .list {
     &-container {
+      display: flex;
+      flex-direction: column;
     }
 
     &-item {
+      padding: 10px;
+      & + .list-item {
+        border-top: solid 1px lightgray;
+      }
     }
   }
 
   .evolution {
     &-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
     }
     &-item {
+      text-transform: capitalize;
+      background: lightgrey;
+      font-size: 1rem;
     }
   }
 }
@@ -174,7 +195,7 @@
   justify-content: center;
 
   &-container {
-    @apply container mx-auto pt-8 pb-10;
+    @apply container mx-auto pt-8 pb-10 px-4;
   }
 }
 
@@ -182,7 +203,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
-  padding: 15px;
   margin: 0 auto;
 
   @media screen and (min-width: 720px) and (max-width: 1279px) {
