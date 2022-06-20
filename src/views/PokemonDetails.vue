@@ -22,14 +22,17 @@
         
       </div>
 
-      <div class="card mb-8 m-">
+      <div class="card mb-8">
         <h3 class="title">Detalhes</h3>
         <ul class="list-container">
           <li>
-            <strong>Peso:</strong> <span>{{pokemon.weight}}</span>
+            <strong>Peso:</strong> <span>{{ pokemon.weight }}</span>
           </li>
           <li>
-            <strong>Altura:</strong> <span>{{pokemon.height}}</span>
+            <strong>Altura:</strong> <span>{{ pokemon.height }}</span>
+          </li>
+          <li>
+            <strong>Código:</strong> <span>{{ pokemon.id }}</span>
           </li>
         </ul>
       </div>
@@ -37,9 +40,10 @@
       <div class="card details mb-8">
         <h3 class="title">Habilidades</h3>
         <ul class="list-container" >
-          <li class="list-item"
-            v-for="(row, index) in pokemon.abilities" :key="index">
-            {{ row.ability }}
+          <li v-for="(row, index) in pokemon.abilities"
+            class="list-item" :key="index">
+            <p class="font-bold capitalize">{{ row.name }}</p>
+            <p>{{ row.description }}</p>
           </li>
         </ul>
       </div>
@@ -103,7 +107,28 @@ export default {
     async loadPokemon (pokeName) {
       const name = pokeName || this.$route.params.name || ''
       this.pokemon = await this.$axios.get(`/pokemon/${name}`).then(res => res.data)
+      
       if (!this.pokemon && !this.pokemon.species && !this.pokemon.species.url) return
+
+      if (!this.pokemon || !this.pokemon.abilities) return
+      
+      const allAbilities = this.pokemon.abilities.map(row => row.ability.url)
+      const fullAbilities = await Promise.all(allAbilities.map(promise => this.$axios.get(promise)))
+      .then(results => {
+        return results.map( result => {
+          return {
+            name: result.data.name,
+            description: result.data.effect_entries[0].effect,
+            short_description: result.data.effect_entries[0].short_effect
+          }
+        })
+      })
+      .finally(res => this.pokemon.abilities = res)
+      
+      if (!fullAbilities) return
+      
+      this.pokemon.abilities = fullAbilities
+
       const getEvos = await this.$axios.get(`${this.pokemon.species.url}`)
         .then(res => {
           if(res.data){
